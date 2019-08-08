@@ -14,7 +14,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Log.d("SHA", Settings.getAPI_KEY());
+        Log.d("API_KEY", Settings.getAPI_KEY());
 
     }
 }
