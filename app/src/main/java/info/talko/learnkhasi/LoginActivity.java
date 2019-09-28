@@ -3,6 +3,7 @@ package info.talko.learnkhasi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,10 +21,16 @@ public class LoginActivity extends AppCompatActivity {
 
     GoogleSignInClient mGoogleSignInClient;
     int RC_SIGN_IN = 1234;
-
+    SharedPreferences sharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        sharedPreferences = getSharedPreferences("userdetails",MODE_PRIVATE);
+
+        if (sharedPreferences.getString("name",null)!=null){
+            startActivity(new Intent( getApplicationContext(), HomeActivity.class));
+        }
         setContentView(R.layout.activity_login);
 
         findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
@@ -71,7 +78,14 @@ public class LoginActivity extends AppCompatActivity {
                 //Log.d("LoginActivity", account.getServerAuthCode());
                 Log.d("LoginActivity", account.getPhotoUrl()+"");
 
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("email",account.getEmail());
+                editor.putString("id",account.getId());
+                editor.putString("name",account.getGivenName());
 
+                editor.apply();
+
+                startActivity(new Intent(getApplicationContext(),HomeActivity.class));
 
                 // Signed in successfully, show authenticated UI.
                 //updateUI(account);
